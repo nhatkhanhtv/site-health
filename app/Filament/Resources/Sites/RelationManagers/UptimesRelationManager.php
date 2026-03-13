@@ -39,7 +39,6 @@ class UptimesRelationManager extends RelationManager
                     ->sortable()
                     ->searchable()
                     ->wrap()
-            ])
-            ;
+            ]);
     }
 }
