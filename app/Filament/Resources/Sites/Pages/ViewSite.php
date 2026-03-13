@@ -16,4 +16,17 @@ class ViewSite extends ViewRecord
             EditAction::make(),
         ];
     }
+
+    /**
+     * override để hiện đúng breadcrumbs
+     */
+    public function getBreadcrumbs(): array
+    {
+        // dd($this->record);
+        return [
+            SiteResource::getUrl('index') => 'Sites',
+            $this->getRecord()->site_name
+            // SiteResource::getUrl('view', ['record' => $this->record]) => $this->getRecord()->site_name
+        ];
+    }
 }

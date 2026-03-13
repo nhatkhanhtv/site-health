@@ -16,4 +16,17 @@ class ListSites extends ListRecords
             CreateAction::make(),
         ];
     }
+
+    /**
+     * override để hiện đúng breadcrumbs
+     */
+    public function getBreadcrumbs(): array
+    {
+        // dd($this->record);
+        return [
+            // SiteResource::getUrl('index') => 'Site',
+            // 'Sites'
+            // SiteResource::getUrl('view', ['record' => $this->record]) => $this->getRecord()->site_name
+        ];
+    }
 }

@@ -23,10 +23,12 @@ class UptimesRelationManager extends RelationManager
             ])->columns([
                 TextColumn::make('status')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->badge(),
                 TextColumn::make('http_status')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->badge(),
                 TextColumn::make('response_time_ms')
                     ->sortable()
                     ->searchable(),

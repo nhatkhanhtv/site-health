@@ -56,4 +56,9 @@ class SiteResource extends Resource
             'edit' => EditSite::route('/{record}/edit'),
         ];
     }
+
+    // public static function getRecordTitleAttribute(): ?string
+    // {
+    //     return 'site_name';
+    // }
 }
