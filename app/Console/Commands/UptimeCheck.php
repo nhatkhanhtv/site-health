@@ -4,8 +4,11 @@ namespace App\Console\Commands;
 
 use App\Models\Site;
 use App\Models\SiteUptime;
+use App\Notifications\AlertSiteDownNotification;
 use App\Services\UptimeCheckService;
+use App\UptimeStatus;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Notification;
 
 class UptimeCheck extends Command
 {
@@ -38,6 +41,7 @@ class UptimeCheck extends Command
             ]
         )->get();
         $uptimeService = new UptimeCheckService();
+        $downsites = [];
         foreach($siteList as $site) {
             
             $checkUptimeResult = $uptimeService->checkDomain($site->site_name);
@@ -52,7 +56,15 @@ class UptimeCheck extends Command
                 $site->next_checked_at = now()->addMinutes($site->time_interval);
                 $site->save();
             }
+            if($siteUptime->status == UptimeStatus::FAIL) {
+                $downsites[] = $siteUptime;
+            }
             
+        }
+
+        if(!empty($downsites)) {
+            Notification::route('slack',config('services.slack.notifications.channel'))
+            ->notify(new AlertSiteDownNotification($downsites));
         }
         
         // $response = Http::head('https://example.com');
