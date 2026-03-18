@@ -34,5 +34,10 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'notifications'=>[
+        'server'=>[
+            'email'=> env('SERVER_NOTIFICATION_EMAIL')
+        ]
+    ]
 
 ];

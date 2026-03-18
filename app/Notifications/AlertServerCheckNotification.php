@@ -30,7 +30,7 @@ class AlertServerCheckNotification extends Notification implements ShouldQueue
      */
     public function via(object $notifiable): array
     {
-        return ['slack'];
+        return ['slack','mail'];
     }
 
     /**
@@ -38,10 +38,27 @@ class AlertServerCheckNotification extends Notification implements ShouldQueue
      */
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
+        $serverCheckInfo = $this->serverCheckInfo;
+        $serverInfo = $serverCheckInfo->serverInfo;
+        $url = route('filament.admin.resources.server-infos.view',[
+                'record'=>$serverInfo]);
+
+        $mailMessage = (new MailMessage)
+            ->error()
+            ->subject("Alert Server low disk!")
+            ->greeting('Hello!')
+            ->line('Your server have low disk space!')
+            ->line('Server name: '.$serverInfo->name)
+            ->line('Ip: '.$serverInfo->ip)
+            ->line('At: '.$serverCheckInfo->created_at)
+            ->line('Disk Info: ');
+        $diskMessage = explode("<br>", $serverCheckInfo->disk);
+        foreach($diskMessage as $message) {
+            $mailMessage = $mailMessage->line($message);
+        }
+        $mailMessage = $mailMessage->action('View', $url)
+            ->line('Hurry and save some disk space!');
+        return $mailMessage;
     }
 
     /**
