@@ -12,8 +12,7 @@ use Illuminate\Notifications\Slack\BlockKit\Blocks\ContextBlock;
 use Illuminate\Notifications\Slack\BlockKit\Blocks\SectionBlock;
 use Illuminate\Notifications\Slack\SlackMessage;
 
-class AlertSiteDownNotification extends Notification 
-implements ShouldQueue
+class AlertSiteDownNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
