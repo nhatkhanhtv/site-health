@@ -60,7 +60,8 @@ class ServerCheckController extends Controller
      */
     private function _checkAndAlertDiskFull($disk, $serverCheck) {
         $freeDisk = ($disk['total'] - $disk['used'])/(1024*1024*1024);
-        if($freeDisk <= 10) { //10GB
+        $freeSpaceAlert = config('services.slack.notifications.free-alert');
+        if($freeDisk <= (int)$freeSpaceAlert) { 
             Notification::route('slack',config('services.slack.notifications.channel'))
                 ->route('mail',config('services.notifications.server.email'))
                 ->notify(new AlertServerCheckNotification($serverCheck));

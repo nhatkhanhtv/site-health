@@ -36,7 +36,8 @@ return [
     ],
     'notifications'=>[
         'server'=>[
-            'email'=> env('SERVER_NOTIFICATION_EMAIL')
+            'email'=> env('SERVER_NOTIFICATION_EMAIL'),
+            'free-alert' => env('SERVER_NOTIFICATION_FREE_SPACE_ALERT', 3)
         ]
     ]
 
