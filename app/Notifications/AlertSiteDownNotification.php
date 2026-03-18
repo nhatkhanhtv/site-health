@@ -34,19 +34,32 @@ class AlertSiteDownNotification extends Notification implements ShouldQueue
      */
     public function via(object $notifiable): array
     {
-        return ['slack'];
+        return [
+            'slack',
+            'mail'];
     }
 
     /**
      * Get the mail representation of the notification.
      */
-    // public function toMail(object $notifiable): MailMessage
-    // {
-    //     return (new MailMessage)
-    //         ->line('The introduction to the notification.')
-    //         ->action('Notification Action', url('/'))
-    //         ->line('Thank you for using our application!');
-    // }
+    public function toMail(object $notifiable): MailMessage
+    {
+        $mailMessage = (new MailMessage)
+            ->subject("Alert Site Down!!")
+            ->error();
+            
+        foreach($this->downsites as $downSite) {
+            $mailMessage->line('---------');
+            $mailMessage->line('Domain: '.$downSite->siteInfo->site_name);
+            $mailMessage->line('At: '.$downSite->checked_at);
+            $mailMessage->line('Error: '.$downSite->error);
+            
+            $mailMessage->line('---------');
+        }
+        $mailMessage->action('View', route('filament.admin.resources.sites.index'));
+            
+        return $mailMessage;
+    }
 
     /**
      * Get the array representation of the notification.
